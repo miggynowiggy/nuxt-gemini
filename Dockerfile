@@ -1,7 +1,10 @@
 FROM node:20-slim AS build
 
+ARG GEMINI_API_KEY=${GEMINI_API_KEY}
+
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+ENV GEMINI_API_KEY=${GEMINI_API_KEY}
 RUN corepack enable
 
 WORKDIR /app
