@@ -1,7 +1,7 @@
 <script setup>
 const messages = ref([
   {
-    role: "AI",
+    role: "model",
     message: "Hello! How can I help you?",
   },
 ]);
@@ -22,31 +22,33 @@ const sendPrompt = async () => {
   loading.value = true;
 
   messages.value.push({
-    role: "User",
+    role: "user",
     message: message.value,
   });
 
   scrollToEnd();
-  message.value = "";
 
-  const res = await fetch(`/api/chat`, {
-    body: JSON.stringify(messages.value.slice(1)),
+  const response = await $fetch(`/api/chat`, {
+    body: {
+      message: message.value,
+      conversation: messages.value,
+    },
     method: "post",
   });
 
-  if (res.status === 200) {
-    const response = await res.json();
+  if (response.status === 200) {
     messages.value.push({
-      role: "AI",
+      role: "model",
       message: response?.message,
     });
   } else {
     messages.value.push({
-      role: "AI",
+      role: "model",
       message: "Sorry, an error occurred.",
     });
   }
 
+  message.value = "";
   loading.value = false;
   scrollToEnd();
 };
@@ -64,7 +66,7 @@ const sendPrompt = async () => {
             :key="i"
             class="flex flex-col p-4"
           >
-            <div v-if="message.role === 'AI'" class="pr-8 mr-auto">
+            <div v-if="message.role === 'model'" class="pr-8 mr-auto">
               <div
                 class="p-2 mt-1 text-sm text-gray-700 bg-gray-200 rounded-lg text-smp-2"
               >
