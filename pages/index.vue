@@ -1,4 +1,6 @@
 <script setup>
+import VueMarkdown from "vue-markdown-render";
+
 const messages = ref([
   {
     role: "model",
@@ -70,7 +72,7 @@ const sendPrompt = async () => {
               <div
                 class="p-2 mt-1 text-sm text-gray-700 bg-gray-200 rounded-lg text-smp-2"
               >
-                {{ message.message }}
+                <VueMarkdown :source="message.message" />
               </div>
             </div>
             <div v-else class="pl-8 ml-auto">
@@ -130,7 +132,6 @@ const sendPrompt = async () => {
           href="https://nuxt.com/docs"
           class="flex items-center font-medium underline transition-colors underline-offset-4 hover:text-black/70"
         >
-          <img src="" class="h-6 mx-2" />
           <p>Nuxt</p>
         </a>
         .
